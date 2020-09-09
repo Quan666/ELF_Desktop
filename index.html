@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>ELF 桌面</title>
+  <meta charset="utf-8">
+  <meta name="renderer" content="webkit">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="layui/css/layui.css" media="all">
+
+</head>
+<style>
+  .flx_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  img {
+    max-width: 100%;
+    max-height: 100%;
+    max-width: 700px;
+    max-height: 900px;
+  }
+</style>
+
+<body>
+
+  <div class="layui-container flx_container">
+    <div class="layui-row" id="rss" style="max-width: 100%;">
+
+
+    </div>
+  </div>
+  </div>
+
+
+
+</body>
+<script src="layui/layui.all.js" charset="utf-8"></script>
+<script src=" js/client.js"></script>
+<script src="config.js"></script>
+<script>
+
+  //轮询检查更新
+  setInterval(getRSS, CheckUpdateTime);
+  getRSS()
+
+  function getRSS() {
+    console.info('检查更新...');
+    for (var i = 0; i < RSS.length; i++) {
+      WebSocketGetHttp(RSS[i], showRSS);
+    }
+  }
+
+
+
+
+  //回调函数
+  function showRSS(data) {
+    var $ = layui.$
+    let html = ``;
+    let flag = false;
+    var MaxItem = 0;
+    $(data).find("item").each(function () { // or "item" or whatever suits your feed
+      if (MaxItem > MaxRSSItem) {
+        return false;
+      }
+      var el = $(this);
+      html = html + `
+                <div class="layui-colla-item">
+                  <h2 class="layui-colla-title">
+                    ${el.find("title").html().replace("&lt;![CDATA[", "").replace("]]&gt;", "")}
+                  </h2>
+                  <div class="layui-colla-content ${flag ? `` : `layui-show`}">
+                    ${el.find("description").html().replace("&lt;![CDATA[", "").replace("]]&gt;", "")}
+                    <br>
+                    <strong>时间：</strong>${new Date(el.find("pubDate").html()).Format("yyyy-MM-dd hh:mm:ss")}
+                    <br>
+                    <strong>链接：</strong><a href="${el.find("guid").html()}" target="_blank" rel="noopener noreferrer">${el.find("guid").text()}</a>
+                  </div>
+                </div>
+                `;
+      flag = true;
+      MaxItem++;
+    });
+
+    //头
+    html_head = `
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+        <legend>${$(data).find("title").html().replace("&lt;![CDATA[", "").replace("]]&gt;", "")}</legend>
+      </fieldset>
+      <div class="layui-collapse" lay-accordion="" id="rss">
+          ${html}
+      </div>
+    `;
+
+
+    document.getElementById('rss').innerHTML = html_head;
+    //面板展开
+    layui.use(['element'], function () {
+      var element = layui.element;
+      element.init();
+    });
+
+  }
+
+
+</script>
+
+</html>
