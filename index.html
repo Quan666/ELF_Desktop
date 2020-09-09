@@ -10,6 +10,16 @@
 
 </head>
 <style>
+  body {
+    background-image: url('background.jpg');
+  }
+
+  
+
+  .fontColor {
+    color: #f2f2f2;
+  }
+
   .flx_container {
     display: flex;
     justify-content: center;
@@ -25,7 +35,6 @@
 </style>
 
 <body>
-
   <div class="layui-container flx_container">
     <div class="layui-row" id="rss" style="max-width: 100%;">
 
@@ -35,7 +44,7 @@
   </div>
 
   <div class="layer-footer"
-    style="z-index: 10; position: fixed; text-align: right; margin-left: -10%; bottom: 0; width:100%; height:50px">
+    style="z-index: 10; position: fixed; text-align: right; margin-left: -10%;margin-bottom: 80px; bottom: 0; width:100%; height:50px">
     <button style="height: 40px;width: 60px" type="button" class="layui-btn layui-btn-sm layui-btn-primary"
       onclick="btnScroll('top')">向上</button>
     <button style="height: 40px;width: 60px" type="button" class="layui-btn layui-btn-sm layui-btn-primary"
@@ -49,10 +58,13 @@
 
 <script>
 
+  function show() {
+    document.write('sss')
+  }
   function btnScroll(value) {
     var x = document.documentElement.scrollLeft || window.pageXOffset || document.body.scrollLeft;
     var y = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
-    console.info(x,y)
+    console.info(x, y)
     switch (value) {
       case 'top':
         window.scrollTo(x, y - 100);
@@ -99,12 +111,12 @@
                   <h2 class="layui-colla-title">
                     ${el.find("title").html().replace("&lt;![CDATA[", "").replace("]]&gt;", "")}
                   </h2>
-                  <div class="layui-colla-content ${flag ? `` : `layui-show`}">
+                  <div class="layui-colla-content fontColor ${flag ? `` : `layui-show`}">
                     ${el.find("description").html().replace("&lt;![CDATA[", "").replace("]]&gt;", "")}
                     <br>
                     <strong>时间：</strong>${new Date(el.find("pubDate").html()).Format("yyyy-MM-dd hh:mm:ss")}
                     <br>
-                    <strong>链接：</strong><a href="${el.find("guid").html()}" target="_blank" rel="noopener noreferrer">${el.find("guid").text()}</a>
+                    <strong>链接：</strong><a class="fontColor" href="${el.find("guid").html()}" target="_blank" rel="noopener noreferrer">${el.find("guid").text()}</a>
                   </div>
                 </div>
                 `;
