@@ -15,5 +15,8 @@
 4. 选择新建 -> 创建壁纸 -> 选择 index.html 文件 -> 确认
 5. 左上角文件 -> 应用壁纸
 
+## 注意
+1. 如果使用了其他桌面整理软件、壁纸软件，可能导致部分功能不正常
+
 ## 预览
 ![](https://cdn.jsdelivr.net/gh/Quan666/CDN@master/pic/ELF_Desktop.jpg)
