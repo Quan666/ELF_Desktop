@@ -5,7 +5,7 @@ function WebSocketGetHttp(HttpUrl, CallBack) {
 
         ws.onopen = function () {
             // Web Socket 已连接上，使用 send() 方法发送数据
-            ws.send("");
+            ws.send("json");
             //alert("数据发送中...");
         };
 
