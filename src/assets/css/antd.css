@@ -1,0 +1,5 @@
+.ant-menu-submenu-selected,
+.ant-menu-item-selected {
+  color: #333 !important;
+  background-color: transparent !important;
+}
