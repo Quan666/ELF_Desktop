@@ -2,8 +2,7 @@ const webpack = require("webpack");
 
 module.exports = {
   publicPath: "./",
-  outputDir: "elf_desktop",
-  assetsDir: "static",
+  outputDir: "dict",
 
   configureWebpack: {
     resolve: {

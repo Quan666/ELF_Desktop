@@ -9,11 +9,15 @@ export function Socket() {
     } else {
       // 实例化
       this.socket = new WebSocket(url);
+
+      console.log("初始化ing");
+      console.log(this.socket);
       // console.log(url);
       this.socket.onopen = this.onopen;
       this.socket.onerror = this.onerror;
       this.socket.onmessage = this.onmessage;
       this.socket.onclose = this.onclick;
+      console.log("初始化完毕");
     }
   };
 
@@ -33,6 +37,8 @@ export function Socket() {
 
   // 连接失败
   Socket.prototype.onerror = () => {
+    console.log(this.socket);
+
     console.log("WebSocket connected failed");
   };
 

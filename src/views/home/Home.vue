@@ -19,6 +19,8 @@
           </div>
           <div class="col-md-4">
             <div>
+              <button class="refresh" @click="refresh">刷新</button>
+              <!-- {{ config }} -->
               <!-- {{ $store.getters.getRSSObjListLength }} -->
             </div>
           </div>
@@ -30,7 +32,6 @@
 
 <script>
 // 配置
-import { WebSocketUri } from "assets/js/config";
 import { UPDATE_RSS_LIST } from "store/mutations-type";
 
 // 组件
@@ -40,13 +41,12 @@ import Scroll from "components/common/Scroll";
 
 // 工具
 import { CurrentTime, xml2json } from "assets/js/utils";
-import { RSS, CheckUpdateTime } from "assets/js/config";
 import { Socket } from "assets/js/websocket";
-
-// Swiper
+import axios from "axios";
 
 export default {
   name: "Home",
+  props: {},
   components: {
     Sidebar,
     Content,
@@ -55,17 +55,27 @@ export default {
 
   data() {
     return {
-      RSSList: RSS,
       RSSDataList: [],
+      config: {},
     };
   },
   created() {
-    this.updateRSSInfo();
+    // 请求配置文件
+    this.getConfig();
   },
-  mounted() {},
+  mounted() {
+    
+  },
   computed: {},
 
   methods: {
+    getConfig() {
+      axios.get("/config.json").then((resolve) => {
+        this.config = resolve.data;
+        this.updateRSSInfo();
+      });
+    },
+
     updateHeight() {
       // console.log(1);
       this.$refs.sideBarScroll.refresh();
@@ -77,18 +87,22 @@ export default {
       console.log("正在更新订阅信息...");
 
       this.RSSDataList = [];
-      for (let link of this.RSSList) {
+      for (let link of this.config.RSS) {
         this.RSS_subscription(link);
       }
+      let delayTime = 5 * 60 * 1000;
       setInterval(() => {
+        if (this.config.CheckUpdateTime) {
+          delayTime = this.config.CheckUpdateTime;
+        }
         console.log("正在更新订阅信息...");
         this.RSSDataList = [];
-        for (let link of this.RSSList) {
+        for (let link of this.config.RSS) {
           console.log(CurrentTime());
 
           this.RSS_subscription(link);
         }
-      }, CheckUpdateTime);
+      }, delayTime);
     },
 
     // 订阅
@@ -118,11 +132,16 @@ export default {
       // 重写实例的onopen函数
 
       // 初始化
-      socket.init(`${WebSocketUri}${url}`);
+      socket.init(`ws://localhost:${this.config.port}/${url}`);
 
       // onmessage 回调函数
       const callBack = xml2json;
     },
+  
+    refresh(){
+      // console.log(1);
+      this.getConfig()
+    }
   },
 };
 </script>
@@ -143,5 +162,11 @@ export default {
 .sidebar {
   display: flex;
   justify-content: center;
+}
+
+.refresh{
+  margin-top: 10px;
+  background: transparent;
+  border: 1px solid #3f3f3f;
 }
 </style>

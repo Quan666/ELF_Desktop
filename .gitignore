@@ -2,6 +2,7 @@
 node_modules
 /dist
 /elf_desktop
+dist
 
 
 # local env files
