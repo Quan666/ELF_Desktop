@@ -42,7 +42,6 @@ import Scroll from "components/common/Scroll";
 // 工具
 import { CurrentTime, xml2json } from "assets/js/utils";
 import { Socket } from "assets/js/websocket";
-import axios from "axios";
 
 export default {
   name: "Home",
@@ -60,22 +59,14 @@ export default {
     };
   },
   created() {
-    // 请求配置文件
     this.getConfig();
+    // console.log("config", this.config);
+    this.updateRSSInfo();
   },
-  mounted() {
-    
-  },
+  mounted() {},
   computed: {},
 
   methods: {
-    getConfig() {
-      axios.get("/config.json").then((resolve) => {
-        this.config = resolve.data;
-        this.updateRSSInfo();
-      });
-    },
-
     updateHeight() {
       // console.log(1);
       this.$refs.sideBarScroll.refresh();
@@ -137,11 +128,17 @@ export default {
       // onmessage 回调函数
       const callBack = xml2json;
     },
-  
-    refresh(){
-      // console.log(1);
-      this.getConfig()
-    }
+
+    getConfig() {
+      console.log(window.config);
+      this.config = window.config;
+    },
+
+    refresh() {
+      console.log("刷新ing...");
+      this.getConfig();
+      this.updateRSSInfo();
+    },
   },
 };
 </script>
@@ -164,7 +161,7 @@ export default {
   justify-content: center;
 }
 
-.refresh{
+.refresh {
   margin-top: 10px;
   background: transparent;
   border: 1px solid #3f3f3f;

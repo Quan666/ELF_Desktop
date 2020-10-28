@@ -12,10 +12,10 @@
 
 > 1. 修改配置
 >
-> > public 目录下 config.json 修改配置
+> > public 目录下 config.js 修改配置
 > >
-> > ```json
-> > {
+> > ```js
+> > window.config={
 > >  "RSS": [
 > >    "https://rss.shab.fun/twitter/user/key_official/exclude_rts",
 > >    ],
